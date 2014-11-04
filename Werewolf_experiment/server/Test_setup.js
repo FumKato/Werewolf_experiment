@@ -1,7 +1,6 @@
 setup = function(day, phase){
 	var data = {
 				villageName : 'village1',
-				number: '*0',
 				quota : '17',
 				roleset : 'A',
 				villagePR : 'testVillagePR',
@@ -26,6 +25,7 @@ setup = function(day, phase){
 			};
 	var villageID = Villages.insert({
 			settings: data,
+			number: '＊0',
 			isStarted: true,
 			gatheringGM: false,
 			isFinished: false,

@@ -47,3 +47,5 @@ VillageView = function(){
 		}
 	};
 };
+
+villageView = new VillageView();

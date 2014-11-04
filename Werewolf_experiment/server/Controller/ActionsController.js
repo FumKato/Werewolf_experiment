@@ -1,5 +1,6 @@
-Meteor.methods({
-	createActions: function(villageID, from, to, type){
+ActionsController = function(){
+	var _this = ActionsController;
+	_this.prototype.createActions = function(villageID, from, to, type){
 		var phase = phasesModel.getPhasesByVillageID(villageID);
 		if(phase == null || (phase.day == 1 && (type == 'guard' || type == 'nightWalk'))) return;
 		var village = villagesModel.getVillages(villageID);
@@ -48,6 +49,12 @@ Meteor.methods({
 			if(voteSkip || actionSkip || type == 'seer' || type == 'nightWalk' || type == 'wizard' || type == 'report') return;
 			actionsModel.updateActions(villageID, phase, from, to, type);
 		}
+	};
+};
+
+Meteor.methods({
+	createActions: function(villageID, from, to, type){
+		new ActionsController().createActions(villageID, from, to, type);
 	},
 	
 	skipCheck: function(villageID){

@@ -1,6 +1,6 @@
 ChatLogsModel = function(){
-	return{
-		createChatLogs: function(villageID, playerID, role, phase, player, plainSentence, options, color, quotes){
+	var _this = ChatLogsModel;
+	_this.prototype.createChatLogs = function(villageID, playerID, role, phase, player, plainSentence, options, color, quotes){
 			var name = player.characterName;
 			var sentence = textChecker.checkEscape(plainSentence);
 			sentence = textChecker.checkTextCommand(villageID, plainSentence);
@@ -89,9 +89,9 @@ ChatLogsModel = function(){
 				});
 			}
 			return type;
-		},
+		};
 		
-		createSystemChatLogs: function(villageID, phase, plainSentence){
+		_this.prototype.createSystemChatLogs = function(villageID, phase, plainSentence){
 			var date = new Date();
 			var year = date.getFullYear();
 			var month = date.getMonth() + 1;
@@ -127,9 +127,9 @@ ChatLogsModel = function(){
 				color: 'none',
 				enableCopy: false
 			});
-		},
+		};
 		
-		createResultChatLogs: function(villageID, phase, plainSentence, logType){
+		_this.prototype.createResultChatLogs = function(villageID, phase, plainSentence, logType){
 			var date = new Date();
 			var year = date.getFullYear();
 			var month = date.getMonth() + 1;
@@ -171,9 +171,9 @@ ChatLogsModel = function(){
 				color: 'none',
 				enableCopy: true
 			});
-		},
+		};
 		
-		createSystemMonologue: function(villageID, playerID, phase, plainSentence){
+		_this.prototype.createSystemMonologue = function(villageID, playerID, phase, plainSentence){
 			var date = new Date();
 			var number = ChatLogs.find({villageID: villageID}).count() + 1;
 			var player = playersModel.getPlayersByID(playerID);
@@ -192,9 +192,9 @@ ChatLogsModel = function(){
 				color: 'none',
 				enableCopy: false
 			});
-		},
+		};
 		
-		createAudienceChatLogs: function(villageID, playerID, role, phase, player, plainSentence, options, quotes){
+		_this.prototype.createAudienceChatLogs = function(villageID, playerID, role, phase, player, plainSentence, options, quotes){
 			var type = 'audience';
 			if(role.roleName == 'GM' || role.roleName == '仮GM'){
 				var name = '<span class="GMName">' + player.characterName + '(GM)>>観戦者</span>';
@@ -231,9 +231,9 @@ ChatLogsModel = function(){
 				color: 'none',
 				enableCopy: true
 			});
-		},
+		};
 		
-		createGhostChatLogs: function(villageID, playerID, role, phase, player, plainSentence, options, quotes){
+		_this.prototype.createGhostChatLogs = function(villageID, playerID, role, phase, player, plainSentence, options, quotes){
 			if(role.roleName != 'GM' && role.roleName != '仮GM') return;
 			var type = 'ghost';
 			var name = '<span class="GMName">' + player.characterName + '(GM)>>霊話</span>'; 
@@ -268,9 +268,9 @@ ChatLogsModel = function(){
 				color: 'none',
 				enableCopy: true
 			});
-		},
+		};
 		
-		getChatLogs: function(villageID, playerID, ninKeys){
+		_this.prototype.getChatLogs = function(villageID, playerID, ninKeys){
 			return ChatLogs.find({
 						villageID: villageID,
 						$or: [
@@ -278,26 +278,25 @@ ChatLogsModel = function(){
 		  					{playerID: playerID, type: 'monologue'}
 		  				]
 		  			});
-		},
+		};
 		
-		getChatLogsByVillageID: function(villageID){
+		_this.prototype.getChatLogsByVillageID = function(villageID){
 			return ChatLogs.find(
 				{villageID: villageID},
 				{sort: {number: -1}}
 			).fetch();
-		},
+		};
 		
-		removeChatLogs: function(villageID){
+		_this.prototype.removeChatLogs = function(villageID){
 			ChatLogs.remove({villageID: villageID});
-		},
+		};
 		
-		removeDummyChatLogs: function(villageID){
+		_this.prototype.removeDummyChatLogs = function(villageID){
 			ChatLogs.remove({
 				villageID: villageID,
 				type: 'dummy'
 			});
-		}
-	};
+		};
 };
 
 chatLogsModel = new ChatLogsModel();

@@ -1,5 +1,4 @@
-RoleInformationView = function(){
-	var roleDetailMessage = {
+var roleDetailMessage = {
 		'観戦者' : 'いらっしゃいませ。プレイヤーと一緒に推理をお楽しみください。',
 		'仮GM' : '村建てありがとうございます。設定変更・キック, 各種発言が可能です。誤爆にお気をつけて。',
 		'GM' : '村建てありがとうございます。設定変更・キック, 各種発言が可能です。誤爆にお気をつけて。',
@@ -14,10 +13,11 @@ RoleInformationView = function(){
 		'少　女' : '毎晩, 誰か1人が人狼であるか知る事ができます。人狼を見つけた時, あなたの正体は人狼にばれてしまいます。',
 		'妖　狐' : '人狼に襲撃されても平気ですが, 占われると死んでしまいます。生き残ること, それがあなたの勝利です。',
 		'妖術師' : 'あなたは人狼の仲間です。毎晩, 誰か1人の役職が「村人」であるかを知ることができます。',
-	};
-	
-	return {
-		render : function(role) {
+};
+
+RoleInformationView = function(){
+	var _this = RoleInformationView;
+	_this.prototype.render = function(role) {
 			var $roleName = $('#roleName');
 			$roleName.html('');
 			$('#roleDetailMessage').html('');
@@ -78,6 +78,5 @@ RoleInformationView = function(){
 				case '妖術師' :
 				  $("#roleIcon").html('<img src="/roleIcon/Wizard.png">'); break;
 			}
-		}
 	};
 };
