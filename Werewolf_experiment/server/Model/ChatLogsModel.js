@@ -1,11 +1,53 @@
+checkText = function(villageID, sentence, length){
+	sentence = textChecker.checkEscape(sentence);
+	sentence = textChecker.checkTextCommand(villageID, sentence);
+	sentence = textConverter.text2Html(sentence);
+	sentence = textChecker.checkTextLength(sentence, length);
+	return sentence;
+};
+
+addOptions = function(sentence, options){
+	if(options.bold) {
+		sentence = '<b>' + sentence + '</b>';
+	}
+	if(options.color) {
+		sentence = '<span class="colored">' + sentence + '</span>';
+	}
+	return sentence;
+};
+
+addQuotes = function(quotes, sentence){
+	for(var i=0;i<quotes.length;i++){
+		quotes[i].sentence = textChecker.checkEscape(quotes[i].sentence);
+		quotes[i].sentence = textConverter.text2Html(quotes[i].sentence);
+		var quoteLabel = '<div class="chatLogQuoteWrapper"><div class="quoteLabel"><span class="quoteTag">>>' + quotes[i].name + '</span><div class="quoteContent"><div class="quoteContentHeader">' +
+	  	quotes[i].name + '</div><div class="quoteContentBody">' + quotes[i].sentence + '</div></div></div></div><br>';
+	  	sentence = quoteLabel + sentence;
+	}
+	return sentence;
+};
+
+insertChatLogs = function(villageID, playerID, phase, name, sentence, type, color, enableCopy){
+	var number = ChatLogs.find({villageID: villageID}).count() + 1;
+	ChatLogs.insert({
+		villageID: villageID,
+		playerID: playerID,
+		day: phase.day,
+		phase: phase.phase,
+		number: number,
+		name: name,
+		sentence: sentence,
+		type: type,
+		color: color,
+		enableCopy: enableCopy
+	});
+};
+
 ChatLogsModel = function(){
 	var _this = ChatLogsModel;
 	_this.prototype.createChatLogs = function(villageID, playerID, role, phase, player, plainSentence, options, color, quotes){
 			var name = player.characterName;
-			var sentence = textChecker.checkEscape(plainSentence);
-			sentence = textChecker.checkTextCommand(villageID, plainSentence);
-			sentence = textConverter.text2Html(sentence);
-			sentence = textChecker.checkTextLength(sentence, 500);
+			var sentence = checkText(villageID, plainSentence, 500);
 			
 			var type = 'monologue';
 			var enableCopy = false;
@@ -44,49 +86,14 @@ ChatLogsModel = function(){
 			}
 			if(role.roleName == 'GM')
 			  name = '<span class="GMName">' + name + '(GM)</span>'; 
-			if(options.bold) {
-				sentence = '<b>' + sentence + '</b>';
-			}
-			if(options.color) {
-				sentence = '<span class="colored">' + sentence + '</span>';
-			}
+			sentence = addOptions(sentence, options);
 			if(type == 'monologue'){
 				name += '<br>(独り言)';
 			}
-			var i = 0;
-			for(i;i<quotes.length;i++){
-				quotes[i].sentence = textChecker.checkEscape(quotes[i].sentence);
-				quotes[i].sentence = textConverter.text2Html(quotes[i].sentence);
-				var quoteLabel = '<div class="chatLogQuoteWrapper"><div class="quoteLabel"><span class="quoteTag">>>' + quotes[i].name + '</span><div class="quoteContent"><div class="quoteContentHeader">' +
-	  			quotes[i].name + '</div><div class="quoteContentBody">' + quotes[i].sentence + '</div></div></div></div><br>';
-	  			sentence = quoteLabel + sentence;
-			}
-			var number = ChatLogs.find({villageID: villageID}).count() + 1;
-			ChatLogs.insert({
-				villageID: villageID,
-				playerID: playerID,
-				day: phase.day,
-				phase: phase.phase,
-				number: number,
-				name: name,
-				sentence: sentence,
-				type: type,
-				color: color,
-				enableCopy: enableCopy
-			});
+			sentence = addQuotes(quotes, sentence);
+			insertChatLogs(villageID, playerID, phase, name, sentence, type, color, enableCopy);
 			if(type == 'wolf') {
-				ChatLogs.insert({
-					villageID: villageID,
-					playerID: 'dummyID',
-					day: phase.day,
-					phase:phase.phase,
-					number: number,
-					name: '遠吠え',
-					sentence: 'アオォーーン',
-					type: 'dummy',
-					color: 'none',
-					enableCopy: false
-				});
+				insertChatLogs(villageID, 'dummyID', phase, '遠吠え', 'アオォーーン', 'dummy', 'none', false);
 			}
 			return type;
 		};
