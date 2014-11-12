@@ -12,7 +12,7 @@ RolesController = function(){
 		return null;
 	};
 	
-	_this.prototype.publishRoles = function(villageID, playerID, role, phase, state, role) {
+	_this.prototype.publishRoles = function(villageID, playerID, phase, state, role) {
 		if(playerID == null || villageID == null) return;
 		var playerRole = rolesModel.getRolesByPlayerID(playerID).fetch()[0];
 		var phase = phasesModel.getPhasesByVillageID(villageID);
@@ -35,6 +35,6 @@ Meteor.methods({
 	}
 });
 
-Meteor.publish('roles', function(villageID, playerID, role, phase, state, role) {
-	return rolesController.publishRoles(villageID, playerID, role, phase, state, role);
+Meteor.publish('roles', function(villageID, playerID, phase, state, role) {
+	return rolesController.publishRoles(villageID, playerID, phase, state, role);
 });
