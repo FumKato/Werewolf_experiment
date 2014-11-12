@@ -27,13 +27,14 @@ RolesController = function(){
 		return rolesModel.getRolesByPlayerID(playerID);
 	};
 };
+rolesController = new RolesController();
 
 Meteor.methods({
 	getRoleName: function(playerID, targetID){
-		return new RolesController.getRoleName(playerID, targetID);
+		return rolesController.getRoleName(playerID, targetID);
 	}
 });
 
 Meteor.publish('roles', function(villageID, playerID, role, phase, state, role) {
-	return new RolesController().publishRoles(villageID, playerID, role, phase, state, role);
+	return rolesController.publishRoles(villageID, playerID, role, phase, state, role);
 });

@@ -23,6 +23,7 @@ ChatLogsController = function(){
 		}
 	};
 };
+chatLogsController = new ChatLogsController();
 
 Meteor.methods({
 	createChatLogs: function(villageID, playerID, plainSentence, options, quotes, clientPhase) {

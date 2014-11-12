@@ -9,7 +9,7 @@ ActionButtonView = function(){
 			$target.removeAttr('disabled');
 		};
 		
-		switch(phase){
+		switch(phase.phase){
 			case '事件前':
 				villageView.flush('logSelector');
 				switch(roleName){

@@ -9,7 +9,7 @@ PhasesController = function() {
 			var actionButtonView = new ActionButtonView();
 			Session.set('currentPhase', phase.phase);
 			villageView.updateBackgroundColor(phase);	
-			actionButtonView.render(phase.phase, role.roleName, player);
+			actionButtonView.render(phase, role.roleName, player);
 			new VillageInformationView().renderPhaseInformation(phase);
 			if(Session.get('villageID')==null || Session.get('currentPhase') == phase.phase) return;
 			Session.set('currentPhase', phase.phase);
