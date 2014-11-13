@@ -3,6 +3,9 @@ ActionButtonView = function(){
 	
 	_this.prototype.render = function(phase, roleName, player){
 		var showButton = function(target){
+			var $buttons = $('.actionButtons');
+			$buttons.attr('disabled', 'disabled');
+			$buttons.hide();
 			var targetName = '#' + target;
 			var $target = $(targetName);
 			$target.show();
@@ -21,14 +24,14 @@ ActionButtonView = function(){
 						villageView.render('extraMenu');
 						new ExtraMenuView().renderButtons(['cnChange']);
 						break;
-					case '役職未定':
-						showButton('changeName');
-						villageView.render('extraMenu');
-						new ExtraMenuView().renderButtons(['suicide', 'imready']);
-						break;
 					case '観戦者':
 						showButton('participate');
 						villageView.flush('extraMenu');
+						break;
+					default:
+						showButton('changeName');
+						villageView.render('extraMenu');
+						new ExtraMenuView().renderButtons(['suicide', 'imready']);
 						break;
 				}
 				break;
@@ -39,7 +42,7 @@ ActionButtonView = function(){
 				}
 				break;
 			case '夕方':
-				if(Session.get('currentState') == '生　存'){
+				if(player.state == '生　存'){
 					new SystemWindowView().flush('actionInformation');
 				}
 				if(roleName != 'GM' && roleName != '観戦者' && player.state == '生　存'){
@@ -91,7 +94,7 @@ ActionButtonView = function(){
 			
 		}
 	};
-		
+	
 	_this.prototype.flush = function(){
 		var $buttons = $('.actionButtons');
 		$buttons.attr('disabled', 'disabled');
@@ -99,3 +102,4 @@ ActionButtonView = function(){
 	};
 	
 };
+actionButtonView = new ActionButtonView();
