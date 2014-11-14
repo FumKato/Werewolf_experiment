@@ -1,5 +1,18 @@
 RolesController = function() {
 		var _this = RolesController;
+		
+		var getColleagueName = function(roles){
+			var playersModel = new PlayersModel();
+			var message = '';
+			for(var i=0; i<roles.length; i++){
+				if(roles[i].playerID == Session.get('myPlayerID')) continue;
+				var player = playersModel.getPlayersByID(roles[i].playerID);
+				message = message + player.characterName + ' ';
+			}
+			message = message.slice(0, -1);
+			return message;
+		};
+		
 		_this.prototype.updateRolesView = function() {
 			var role = new RolesModel().getRolesByPlayerID(Session.get('myPlayerID'));
 			if(role == null) return;
@@ -19,14 +32,7 @@ RolesController = function() {
 					} else {
 						var message = 'もう一人の共有者は <span class="mason">';
 					}
-					var i;
-					var playersModel = new PlayersModel();
-					for(i=0; i<roles.length; i++){
-						if(roles[i].playerID == Session.get('myPlayerID')) continue;
-						var player = playersModel.getPlayersByID(roles[i].playerID);
-						message = message + player.characterName + ',';
-					}
-					message = message.slice(0, -1);
+					message += getColleagueName(roles);
 					message += '</span>です';
 					systemWindowView.renderColleague(message);
 				}

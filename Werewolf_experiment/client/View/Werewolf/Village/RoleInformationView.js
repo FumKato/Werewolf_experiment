@@ -80,3 +80,4 @@ RoleInformationView = function(){
 			}
 	};
 };
+roleInformationView = new RoleInformationView();
