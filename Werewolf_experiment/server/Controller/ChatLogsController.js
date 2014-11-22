@@ -5,7 +5,7 @@ ChatLogsController = function(){
 		var player = playersModel.getPlayersByID(playerID);
 		var village = villagesModel.getVillages(villageID);
 		if(role == null || phase == null || player == null || village == null) return null;
-		if(phase == '事件前' || phase == '事件終了' || role.roleName == 'GM') {
+		if(phase == '事件前' || phase == '事件終了' || role.roleName == 'GM' || role.roleName == '仮GM') {
 			return chatLogsModel.getChatLogs(villageID, playerID, ['dummy']);
 		} else if(player.isPlayer && player.state == '死　亡') {
 			if(village.settings.hideRole){

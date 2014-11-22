@@ -24,6 +24,7 @@ RoleInformationView = function(){
 			$roleName.removeClass();
 			switch(role.roleName) {
 				case 'GM':
+				case '仮GM':
 				case '人　狼':
 					$roleName.addClass('wolfOrGM');break;
 				case '占い師':
