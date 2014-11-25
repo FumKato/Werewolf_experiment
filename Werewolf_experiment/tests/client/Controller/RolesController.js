@@ -20,7 +20,6 @@ suite('Client: RolesController', function() {
 		  	new ActionButtonView().flush();
 		  	new VillageView().enableInputs();
 		  	
-			//rolesController.updateRolesView();
 			adapt_context();
 			var result = $('#GMMenu').is(':visible');
 			emit('check', result, true);
@@ -51,7 +50,6 @@ suite('Client: RolesController', function() {
 		  	new ActionButtonView().flush();
 		  	new VillageView().enableInputs();
 		  	
-			//rolesController.updateRolesView();
 			adapt_context();
 			var result = $('#GMMenu').is(':visible');
 			emit('check', result, true);
